@@ -1,4 +1,7 @@
 const cron = require('node-cron')
+const express = require('express')
+const app = express()
+const PORT = 3000
 
 const statuses = {
     0 : "Closed",
@@ -39,6 +42,19 @@ const liftreport = {
     chair25 :   randomStatus(),
 }
 
+let stream = {...liftreport}
+
+
 cron.schedule("*/2 * * * * *", () => {
-    console.log(liftreport)
+    stream = {...liftreport}
 })
+
+
+/////////////////////////
+//Controller
+/////////////////////////
+app.get("/", (req,res) => {
+    res.json(stream)
+})
+
+app.listen(PORT, () => console.log("WERE LIVE"))
